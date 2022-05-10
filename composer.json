@@ -1,0 +1,19 @@
+{
+    "name": "banhtrung/data-grid-api",
+    "description": "this is a package to support query via api",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Banhtrung\\DataGridApi\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "trungbanh",
+            "email": "trungbanh97@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
