@@ -134,10 +134,8 @@ abstract class DataGrid
     public function getQueryString($fullUrl)
     {
         $queryString = explode('?', $fullUrl)[1] ?? null;
-
         $parsedQueryStrings = $this->parseQueryStrings($queryString);
         $this->itemsPerPage = isset($parsedQueryStrings['perPage']) ? $parsedQueryStrings['perPage']['eq'] : $this->itemsPerPage;
-
         unset($parsedQueryStrings['perPage']);
 
         return $this->updateQueryStrings($parsedQueryStrings);
@@ -148,7 +146,7 @@ abstract class DataGrid
     {
         $parsedQueryStrings = [];
         if ($queryString) {
-            parse_str(urlencode($queryString), $parsedQueryStrings);
+            parse_str(urldecode($queryString), $parsedQueryStrings);
             unset($parsedQueryStrings['page']);
         }
         return $parsedQueryStrings;
@@ -168,7 +166,7 @@ abstract class DataGrid
                 if (!is_array($value)) {
                     unset($parsedQueryStrings[$key]);
                 }
-            } else if (is_array($value)) {
+            } else if (!is_array($value)) {
                 unset($parsedQueryStrings[$key]);
             }
         }
@@ -178,20 +176,20 @@ abstract class DataGrid
 
     public function sortOrFilterCollection($collection, $parseInfo)
     {
-        // foreach ($parseInfo as $key => $info) {
-        //     $columnType = $this->findColumnType($key)[0] ?? null;
-        //     $columnName = $this->findColumnType($key)[1] ?? null;
+        foreach ($parseInfo as $key => $info) {
+            $columnType = $this->findColumnType($key)[0] ?? null;
+            $columnName = $this->findColumnType($key)[1] ?? null;
 
-        //     if ($this->exceptionCheckInColumns($columnName)) {
-        //         return $collection;
-        //     }
+            if ($this->exceptionCheckInColumns($columnName)) {
+                return $collection;
+            }
 
-        //     match ($key) {
-        //         'sort'   => $this->sortCollection($collection, $info),
-        //         'search' => $this->searchCollection($collection, $info),
-        //         default  => $this->filterCollection($collection, $info, $columnType, $columnName)
-        //     };
-        // }
+            match ($key) {
+                'sort'   => $this->sortCollection($collection, $info),
+                'search' => $this->searchCollection($collection, $info),
+                default  => $this->filterCollection($collection, $info, $columnType, $columnName)
+            };
+        }
 
         return $collection;
     }
@@ -230,6 +228,15 @@ abstract class DataGrid
             }
         } else {
             return $this->defaultResults($queryBuilderOrCollection);
+        }
+    }
+
+    public function findColumnType($columnAlias)
+    {
+        foreach ($this->completedColumnsDetails as $column) {
+            if ($column['index'] == $columnAlias) {
+                return [$column['type'], $column['index']];
+            }
         }
     }
 }
