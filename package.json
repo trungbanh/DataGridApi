@@ -1,0 +1,35 @@
+{
+  "name": "datagridapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npm run development",
+    "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --config=node_modules/laravel-mix/setup/webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trungbanh/DataGridApi.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/trungbanh/DataGridApi/issues"
+  },
+  "homepage": "https://github.com/trungbanh/DataGridApi#readme",
+  "devDependencies": {
+    "axios": "^0.27.2",
+    "cross-env": "^7.0.3",
+    "laravel-mix": "^6.0.43",
+    "laravel-mix-merge-manifest": "^2.0.0",
+    "postcss": "^8.4.14",
+    "vue-loader": "^15.9.8",
+    "vue-template-compiler": "^2.6.14"
+  },
+  "dependencies": {
+    "autoprefixer": "^9.8.8",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17"
+  }
+}

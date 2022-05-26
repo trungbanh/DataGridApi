@@ -128,6 +128,7 @@ abstract class DataGrid
     {
         return [
             'index' => $this->index,
+            'columns' => $this->completedColumnsDetails,
             'data' => $this->collection,
             'paginate' => $this->paginate,
         ];
@@ -138,10 +139,12 @@ abstract class DataGrid
         $queryString = $this->getQueryString(url()->full());
 
         if (count($queryString)) {
-            $filteredOrderSortedCollection = $this->sortOrFilterCollection(
+            $filteredOrSortedCollection = $this->sortOrFilterCollection(
                 $this->queryBuilder,
                 $queryString
             );
+
+            return $this->collection = $this->generateResults($filteredOrSortedCollection);
         }
 
         return $this->collection = $this->generateResults($this->queryBuilder);
@@ -150,9 +153,11 @@ abstract class DataGrid
     public function getQueryString($fullUrl)
     {
         $queryString = explode('?', $fullUrl)[1] ?? null;
+
         $parsedQueryStrings = $this->parseQueryStrings($queryString);
         $this->itemsPerPage = isset($parsedQueryStrings['perPage']) ? $parsedQueryStrings['perPage']['eq'] : $this->itemsPerPage;
         unset($parsedQueryStrings['perPage']);
+
 
         return $this->updateQueryStrings($parsedQueryStrings);
     }
@@ -165,6 +170,7 @@ abstract class DataGrid
             parse_str(urldecode($queryString), $parsedQueryStrings);
             unset($parsedQueryStrings['page']);
         }
+
         return $parsedQueryStrings;
     }
 

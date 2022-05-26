@@ -3,6 +3,11 @@
     "description": "this is a package to support query via api",
     "type": "library",
     "license": "MIT",
+    "require": {
+        "php": "^8.0.2",
+        "guzzlehttp/guzzle": "^7.2",
+        "laravel/framework": "^8.0"
+    },
     "autoload": {
         "psr-4": {
             "Banhtrung\\DataGridApi\\": "src/"
@@ -14,6 +19,13 @@
             "email": "trungbanh97@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
-    "require": {}
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Banhtrung\\DataGridApi\\Providers\\DataGridServiceProvider"
+            ],
+            "aliases": {}
+        }
+    },
+    "minimum-stability": "dev"
 }
